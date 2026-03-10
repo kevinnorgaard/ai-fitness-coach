@@ -2,6 +2,23 @@
 
 An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from Strava and Google Calendar, then plans and logs workouts.
 
+## Architecture
+
+```
+┌─────────────┐     SSE      ┌─────────────────────────────────────┐
+│             │──────────────▶│              n8n                    │
+│ Claude Code │               │                                    │
+│             │◀──────────────│  ┌───────────┐   ┌──────────────┐  │
+└─────────────┘               │  │  Strava   │   │   Google     │  │
+                              │  │ MCP Server│   │  Calendar    │  │
+                              │  │           │   │  MCP Server  │  │
+                              │  └─────┬─────┘   └──────┬───────┘  │
+                              └────────┼────────────────┼──────────┘
+                                       │                │
+                                       ▼                ▼
+                                   Strava API    Google Calendar API
+```
+
 ## Stack
 
 - **Claude Code** — AI agent CLI that calls n8n for MCP tools
@@ -29,56 +46,52 @@ An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from
 
     Go to http://localhost:5678 and sign up for an account.
 
-4. Create the n8n MCP servers. Import [`n8n-template.json`](n8n-template.json) into your workspace, then add your own [Google Calendar credentials](https://www.youtube.com/watch?v=FBGtpWMTppw) and Strava credentials.
+4. Create the n8n MCP servers. Import [`n8n-template.json`](n8n-template.json) into your workspace, then add your own [Google Calendar credentials](https://www.youtube.com/watch?v=FBGtpWMTppw) and [Strava credentials](https://developers.strava.com) to the imported nodes.
 
-    ![](https://gist.github.com/user-attachments/assets/e199b1ac-b829-4159-8978-796f459c33c1)
+    ![n8n workflow overview showing Strava and Google Calendar MCP servers](https://gist.github.com/user-attachments/assets/e199b1ac-b829-4159-8978-796f459c33c1)
 
-    - Add an **MCP Server Trigger** node connected to a **Call n8n Workflow Tool** node. The tool node defines the tool schema, which the AI agent sees. It is important that the name, description, and input schema are clear and understandable for the agent.
+<details>
+<summary>5. (Optional) Test the MCP server</summary>
 
-      ![](https://gist.github.com/user-attachments/assets/961b936d-ccd3-484b-9c5e-8a0a33c3e87c)
+Initialize a connection (the URL is in **MCP Server Trigger** node > Production URL), then request the tools list:
 
-    - Add an **Execute Sub-Workflow** node connected to an **HTTP Request** node. Add your Strava credentials and request in the node.
+```bash
+curl -X POST http://localhost:5678/mcp/strava \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -D headers.txt \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "initialize",
+    "params": {
+      "protocolVersion": "2024-11-05",
+      "capabilities": {},
+      "clientInfo": {
+        "name": "curl-client",
+        "version": "1.0.0"
+      }
+    }
+  }'
 
-      ![](https://gist.github.com/user-attachments/assets/fccfe36d-9ed7-4b34-8737-ed2ed0f80047)
-      ![](https://gist.github.com/user-attachments/assets/b5b3091c-313c-4b12-bf6d-2a9258403efc)
+SESSION_ID=$(grep -i "mcp-session-id" headers.txt | awk '{print $2}' | tr -d '\r')
+echo "$SESSION_ID"
 
-5. Test the MCP server. Initialize a connection (the URL is in **MCP Server Trigger** node > Production URL), then request the tools list:
+curl -N -X POST http://localhost:5678/mcp/strava \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -H "Mcp-Session-Id: $SESSION_ID" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": 2,
+    "method": "tools/list",
+    "params": {}
+  }'
+```
 
-    ```bash
-    curl -X POST http://localhost:5678/mcp/strava \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -D headers.txt \
-      -d '{
-        "jsonrpc": "2.0",
-        "id": 1,
-        "method": "initialize",
-        "params": {
-          "protocolVersion": "2024-11-05",
-          "capabilities": {},
-          "clientInfo": {
-            "name": "curl-client",
-            "version": "1.0.0"
-          }
-        }
-      }'
+You should see the available tools in the response. The tool names and descriptions matter — they're what the agent uses to decide which tool to call.
 
-    SESSION_ID=$(grep -i "mcp-session-id" headers.txt | awk '{print $2}' | tr -d '\r')
-    echo "$SESSION_ID"
-
-    curl -N -X POST http://localhost:5678/mcp/strava \
-      -H "Content-Type: application/json" \
-      -H "Accept: application/json, text/event-stream" \
-      -H "Mcp-Session-Id: $SESSION_ID" \
-      -d '{
-        "jsonrpc": "2.0",
-        "id": 2,
-        "method": "tools/list",
-        "params": {}
-      }'
-    ```
-
-    You should see the available tools in the response. The tool names and descriptions matter — they're what the agent uses to decide which tool to call.
+</details>
 
 ### Claude Code
 
@@ -91,7 +104,7 @@ An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from
 
     Or add them directly to `.mcp.json` in the project root.
 
-7. Add your workout program. Place your spreadsheet in the project root as `MyWorkoutProgram.xlsx`. This is the ground truth for your split, exercises, and volume targets.
+7. Replace [`MyWorkoutProgram.xlsx`](MyWorkoutProgram.xlsx) with your own workout program spreadsheet. This is the ground truth for your split, exercises, and volume targets.
 
 8. Add the fitness coach skill. Copy `SKILL.md` into the Claude Code skills directory:
 
