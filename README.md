@@ -14,10 +14,7 @@ graph LR
     end
 ```
 
-## Stack
-
-- **Claude Code** — AI agent CLI that calls n8n for MCP tools
-- **n8n** — Hosts MCP servers (Strava, Google Calendar)
+[n8n](https://n8n.io) is a workflow automation tool that hosts MCP servers, letting Claude Code call external APIs like Strava and Google Calendar as tools.
 
 ## Setup
 
