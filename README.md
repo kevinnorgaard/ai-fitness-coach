@@ -1,6 +1,6 @@
 # AI Fitness Coach with MCP Servers
 
-An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from Strava and Google Calendar, then plans and logs workouts.
+A personal AI fitness coach that reviews your Strava activity and Google Calendar history to plan, adjust, and log strength and running workouts. Built with Claude Code and n8n MCP servers.
 
 ## Architecture
 
