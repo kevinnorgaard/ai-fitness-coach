@@ -29,7 +29,7 @@ An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from
 
     Go to http://localhost:5678 and sign up for an account.
 
-4. Create an n8n Strava MCP server. You can copy from my [template](https://gist.github.com/kevinnorgaard/93ed9a14972f88ebb57a83382989749f), paste it into your workspace, and create your own [Google Calendar credentials](https://www.youtube.com/watch?v=FBGtpWMTppw) and Strava credentials.
+4. Create the n8n MCP servers. Import [`n8n-template.json`](n8n-template.json) into your workspace, then add your own [Google Calendar credentials](https://www.youtube.com/watch?v=FBGtpWMTppw) and Strava credentials.
 
     ![](https://gist.github.com/user-attachments/assets/e199b1ac-b829-4159-8978-796f459c33c1)
 
@@ -82,13 +82,25 @@ An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from
 
 ### Claude Code
 
-6. Configure Claude Code to use the n8n MCP server. Copy the MCP Production URL from the n8n node details, then add it:
+6. Configure Claude Code to use both n8n MCP servers:
 
     ```bash
     claude mcp add --transport sse strava http://localhost:5678/mcp/strava
+    claude mcp add --transport sse google-calendar http://localhost:5678/mcp/google-calendar
     ```
 
-    Or add it directly to `.mcp.json` in the project root.
+    Or add them directly to `.mcp.json` in the project root.
+
+7. Add your workout program. Place your spreadsheet in the project root as `MyWorkoutProgram.xlsx`. This is the ground truth for your split, exercises, and volume targets.
+
+8. Add the fitness coach skill. Copy `SKILL.md` into the Claude Code skills directory:
+
+    ```bash
+    mkdir -p .claude/skills/fitness-coach
+    cp SKILL.md .claude/skills/fitness-coach/SKILL.md
+    ```
+
+    This registers the `/fitness-coach` slash command, which gives Claude the coaching instructions, programming rules, and calendar event templates.
 
 ## Usage
 

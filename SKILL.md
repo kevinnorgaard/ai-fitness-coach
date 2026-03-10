@@ -8,10 +8,9 @@ allowed-tools: get_strava_activities get_strava_activity_by_id calendar.createEv
 
 ## 1. Data Sources
 
-1. MyWorkoutProgram.pdf: Ground truth for split, exercises, and volume. Do not modify unless asked.
+1. `MyWorkoutProgram.xlsx`: Ground truth for split, exercises, and volume (2 sheets; sheet 2 reads from sheet 1). Do not modify unless asked.
 2. Google Calendar: Source of truth for past performance (progression) and future schedule.
 3. Strava: Use `get_strava_activities` → `get_strava_activity_by_id` to get full HR/performance data from Apple Watch.
-4. JeffNippardsUpperLowerStrengthandSizeProgram.pdf: Reference only. Never overrides MyWorkoutProgram.
 
 ## 2. Athlete Profile & Goals
 
@@ -29,14 +28,14 @@ allowed-tools: get_strava_activities get_strava_activity_by_id calendar.createEv
 
 ### 4.1 Session Planning Workflow
 
-1. Review MyWorkoutProgram.pdf, calendar history, and readiness metrics.
+1. Review MyWorkoutProgram.xlsx, calendar history, and readiness metrics.
 2. Propose a one‑line intention. **Wait for user confirmation.**
 3. Generate the full session plan. **Wait for user confirmation.**
 4. Write to Google Calendar only after final approval.
 
 ### 4.2 Progression & Effort
 
-**Source of Truth:** Refer to `MyWorkoutProgram.pdf` for all volume targets and weekly split.
+**Source of Truth:** Refer to `MyWorkoutProgram.xlsx` for all volume targets and weekly split.
 
 **Effort Guidelines:**
 - **Standard:** 1–3 RIR.
