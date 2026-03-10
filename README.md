@@ -4,19 +4,14 @@ An AI fitness coach that uses Claude Code with n8n MCP servers to pull data from
 
 ## Architecture
 
-```
-┌─────────────┐     SSE      ┌─────────────────────────────────────┐
-│             │──────────────▶│              n8n                    │
-│ Claude Code │               │                                    │
-│             │◀──────────────│  ┌───────────┐   ┌──────────────┐  │
-└─────────────┘               │  │  Strava   │   │   Google     │  │
-                              │  │ MCP Server│   │  Calendar    │  │
-                              │  │           │   │  MCP Server  │  │
-                              │  └─────┬─────┘   └──────┬───────┘  │
-                              └────────┼────────────────┼──────────┘
-                                       │                │
-                                       ▼                ▼
-                                   Strava API    Google Calendar API
+```mermaid
+graph LR
+    CC[Claude Code] -->|SSE| S[Strava MCP Server]
+    CC -->|SSE| G[Google Calendar MCP Server]
+    subgraph n8n
+        S --> SA[Strava API]
+        G --> GA[Google Calendar API]
+    end
 ```
 
 ## Stack
