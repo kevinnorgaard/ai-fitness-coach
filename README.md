@@ -1,4 +1,4 @@
-# AI Fitness Coach with MCP Servers
+# AI Fitness Coach
 
 A personal AI fitness coach that reviews your Strava activity and Google Calendar history to plan, adjust, and log strength and running workouts. Built with Claude Code and n8n MCP servers.
 
