@@ -1,0 +1,370 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "path": "strava"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "61327734-0ac2-4b6b-9f1b-ffc92619e3c0",
+      "name": "Strava MCP Server",
+      "webhookId": "18794407-7479-4748-8e78-e4b06b102f36"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "function_name"
+            },
+            {
+              "name": "payload"
+            }
+          ]
+        }
+      },
+      "id": "3d70c386-87ae-4157-91ee-585e63edac47",
+      "name": "When Executed by Another Workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        176,
+        432
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "url": "=https://www.strava.com/api/v3/activities/{{ $json[\"payload\"][\"text\"] }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "stravaOAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        368,
+        432
+      ],
+      "id": "b5c34ce6-46f3-44b6-84c7-7d6b738972f0",
+      "name": "HTTP Request",
+      "credentials": {
+        "stravaOAuth2Api": {
+          "id": "inRZyPSt1WLtPdy2",
+          "name": "Strava account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "get_strava_activity_by_id",
+        "description": "Call this tool to get a Strava activity by ID. This will provide details for that activity including heart rate, best efforts by segment, etc.",
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "payload": "={\n  \"text\": \"{{ $fromAI(\"id\", \"activity id\", \"string\") }}\"\n}\n",
+            "function_name": "get_strava_activity_by_id"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "function_name",
+              "type": "string",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "function_name",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "payload",
+              "type": "object",
+              "display": true,
+              "removed": false,
+              "required": false,
+              "displayName": "payload",
+              "defaultMatch": false,
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "id": "0678ad60-caf5-43eb-985d-d0acdff5ad63",
+      "name": "get_strava_activity_by_id",
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "position": [
+        0,
+        432
+      ],
+      "typeVersion": 2.1
+    },
+    {
+      "parameters": {
+        "toolDescription": "Call this tool to get the last 30 Strava activities. This only provides high-level summaries for each activity. To get full details, call get_strava_activity_by_id.",
+        "url": "https://www.strava.com/api/v3/athlete/activities",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "stravaOAuth2Api",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "per_page",
+              "value": "30"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.3,
+      "position": [
+        0,
+        208
+      ],
+      "id": "5372a60c-8d1e-44de-9594-b7de7e6e034b",
+      "name": "get_strava_activities",
+      "credentials": {
+        "stravaOAuth2Api": {
+          "id": "inRZyPSt1WLtPdy2",
+          "name": "Strava account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "google-calendar"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        672,
+        16
+      ],
+      "id": "245b6434-481f-4256-80d1-e8e2259b6c1d",
+      "name": "Google Calendar MCP Server",
+      "webhookId": "18794407-7479-4748-8e78-e4b06b102f36"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "kevinnorg@gmail.com",
+          "mode": "list",
+          "cachedResultName": "kevinnorg@gmail.com"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        672,
+        272
+      ],
+      "id": "619212c7-da68-4842-ae00-bdd6d420827d",
+      "name": "calendar.listEvents",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "7t3jeaBzdufRkNpT",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "calendar": {
+          "__rl": true,
+          "value": "kevinnorg@gmail.com",
+          "mode": "list",
+          "cachedResultName": "kevinnorg@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        848,
+        272
+      ],
+      "id": "f822e001-0e3e-4fcf-8952-90e91688fc25",
+      "name": "calendar.getEvent",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "7t3jeaBzdufRkNpT",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "kevinnorg@gmail.com",
+          "mode": "list",
+          "cachedResultName": "kevinnorg@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+          "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        272
+      ],
+      "id": "f2de4886-0b04-4ede-b75c-a97ca0d94824",
+      "name": "calendar.createEvent",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "7t3jeaBzdufRkNpT",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "kevinnorg@gmail.com",
+          "mode": "list",
+          "cachedResultName": "kevinnorg@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "description": "={{ $fromAI(\"event_description\", \"The event description\", \"string\") }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ $fromAI(\"event_title\", \"The event title\", \"string\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        1200,
+        272
+      ],
+      "id": "3f9bce89-ca34-46e3-8dff-9a9698896a25",
+      "name": "calendar.updateEvent",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "7t3jeaBzdufRkNpT",
+          "name": "Google Calendar account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_strava_activity_by_id": {
+      "ai_tool": [
+        [
+          {
+            "node": "Strava MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_strava_activities": {
+      "ai_tool": [
+        [
+          {
+            "node": "Strava MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendar.listEvents": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendar.getEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendar.createEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "calendar.updateEvent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Google Calendar MCP Server",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "payload": {
+          "text": 16929155492
+        },
+        "function_name": "get_strava_activity_by_id"
+      }
+    ]
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d839516cb72d9dbdb59c89ad222ceab3fc50cd50b93b45751f39e693a4462a06"
+  }
+}
