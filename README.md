@@ -96,7 +96,10 @@ You should see the available tools in the response. The tool names and descripti
 
     Or add them directly to `.mcp.json` in the project root.
 
-7. Edit or replace [`MyWorkoutProgram.xlsx`](MyWorkoutProgram.xlsx) with your own workout program. This is the ground truth for your split, exercises, and volume targets.
+7. Edit or replace [`MyWorkoutProgram.xlsx`](MyWorkoutProgram.xlsx) with your own workout program. This is the ground truth for your split, exercises, and volume targets. After editing the spreadsheet, export it as two CSV files so Claude Code can read them directly:
+
+    - `MyWorkoutProgram-Routine.csv` — the Routine sheet
+    - `MyWorkoutProgram-MuscleGroupSetsPerWeek.csv` — the Muscle Group Sets Per Week sheet
 
     ![Workout program spreadsheet showing exercises, sets, and muscle groups per day](workout-program.png)
 

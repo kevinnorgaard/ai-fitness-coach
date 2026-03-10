@@ -1,0 +1,27 @@
+Day,Exercise,Sets,Primary Muscle (1.0 count),Secondary Muscle (0.5 count)
+Upper #1,Barbell Bench Press,3,"Chest (Lower), Triceps",Shoulders (Front)
+Upper #1,Wide Grip Pull-Up,3,Back (Lats),"Back (Upper), Biceps, Shoulders (Rear), Forearms"
+Upper #1,Incline Dumbbell Bench Press,3,Chest (Upper),"Shoulders (Front), Triceps"
+Upper #1,Machine Rear Delt Row,3,"Shoulders (Rear), Back (Upper)","Biceps, Back (Lower), Forearms"
+Upper #1,Dumbbell Shoulder Press,3,"Shoulders (Front), Shoulders (Side)","Triceps, Chest (Upper)"
+Upper #1,Dumbbell Crossbody Hammer Curl,3,Biceps,
+Lower #1,Barbell Back Squat,3,"Quads, Glutes","Back (Lower), Abductors, Adductors, Hamstrings"
+Lower #1,Sled 45° Leg Press,3,Quads,"Glutes, Hamstrings"
+Lower #1,Machine Hip Adduction,3,Adductors,
+Lower #1,Seated Leg Extension,3,Quads,
+Lower #1,Single Leg Dumbbell Standing Calf Raise,3,Calves,
+Upper #2,Barbell Overhead Press,3,"Shoulders (Front), Shoulders (Side)","Triceps, Chest (Upper)"
+Upper #2,Wide Grip Pull-Up,3,Back (Lats),"Back (Upper), Biceps, Shoulders (Rear), Forearms"
+Upper #2,Close Grip Dumbbell Bench Press,3,"Chest (Lower), Triceps",Shoulders (Front)
+Upper #2,Machine Chest-Supported Row (Wide Grip),3,"Back (Lats), Back (Upper)","Shoulders (Rear), Biceps, Forearms"
+Upper #2,Incline Dumbbell Bench Press,3,Chest (Upper),"Shoulders (Front), Triceps"
+Upper #2,Cable Single Arm Lateral Raise,4,Shoulders (Side),
+Lower #2,Dumbbell Split Squat,3,"Quads, Glutes","Abductors, Adductors, Hamstrings, Forearms"
+Lower #2,Romanian Deadlift,3,"Hamstrings, Glutes","Back (Lower), Forearms"
+Lower #2,Machine Hip Abduction,3,Abductors,
+Lower #2,Seated Leg Curl,3,Hamstrings,
+Lower #2,Machine Standing Calf Raise,3,Calves,
+Accessories,Machine Chest-Supported Row (Wide Grip),3,"Back (Lats), Back (Upper)","Shoulders (Rear), Biceps, Forearms"
+Accessories,45° Back Extension,3,"Back (Lower), Glutes, Hamstrings",
+Accessories,Seated Machine Crunch,4,Abs,
+Accessories,Dumbbell Arm Lateral Raise,3,Shoulders (Side),
