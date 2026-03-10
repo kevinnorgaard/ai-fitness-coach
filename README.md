@@ -40,7 +40,7 @@ graph LR
 
 4. Create the n8n MCP servers. Import [`n8n-template.json`](n8n-template.json) into your workspace, then add your own [Google Calendar credentials](https://www.youtube.com/watch?v=FBGtpWMTppw) and [Strava credentials](https://developers.strava.com) to the imported nodes.
 
-    ![n8n workflow overview showing Strava and Google Calendar MCP servers](https://gist.github.com/user-attachments/assets/e199b1ac-b829-4159-8978-796f459c33c1)
+    ![n8n workflow overview showing Strava and Google Calendar MCP servers](n8n-workflow.png)
 
 <details>
 <summary>5. (Optional) Test the MCP server</summary>
